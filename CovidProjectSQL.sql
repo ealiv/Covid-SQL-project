@@ -62,7 +62,7 @@ ORDER BY total_death_count DESC
 
 
 -- ANALYSING DATA BY CONTINENT
---6. Which continet has the most people died due to Covid?
+--6. Which continent has the most people died due to Covid?
 SELECT location AS continent, MAX(CONVERT(NUMERIC, total_deaths)) AS total_death_count
     -- here we did convert to NUMERIC because initially data type us NVARCHAR
 FROM PortfolioProject1..coviddeath
