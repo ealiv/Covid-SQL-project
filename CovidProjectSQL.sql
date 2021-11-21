@@ -124,7 +124,12 @@ GROUP BY vax.location
 ORDER BY 2 DESC
 -- The highest number of people vaccinated across all countries is China, the second is India, then the US and Brazil
 
-
+-- 11.  Shows total Covid-19 cases, total death and percentage of people died in the US
+Select SUM(new_cases) as total_cases, SUM(Cast(new_deaths as numeric)) as total_deaths, SUM(cast(new_deaths as numeric))/SUM(New_Cases)*100 as DeathPercentage
+From PortfolioProject1..coviddeath
+Where location like '%states%'
+and continent is not null 
+order by 1,2
 
 
 
