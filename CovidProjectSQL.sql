@@ -6,14 +6,14 @@
 --FROM PortfolioProject1..CovidVax
 --ORDER BY 3,4
 
--- Selecting Data that we are going to use
+--1. Selecting Data that we are going to use
 SELECT Location, date, total_cases, new_cases, total_deaths, population
 FROM PortfolioProject1..coviddeath
 --WHERE Location = 'Kyrgyzstan'
 ORDER BY 1,2 --by columns 1,2 meaning sorting based of location and date columns
 
 
--- Looking at the total cases vs total deaths(what is the percentage of people died who had Covid?)
+--2. Looking at the total cases vs total deaths(what is the percentage of people died who had Covid?)
 -- Shows the likelihood of dying if you contract Covid in KG
 SELECT Location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 AS death_percentage
 FROM PortfolioProject1..CovidDeath
@@ -26,7 +26,7 @@ FROM PortfolioProject1..CovidDeath
 WHERE Location = 'United States'
 ORDER BY 1,2
 
--- Looking at total cases vs population in KG and the US
+--3. Looking at total cases vs population in KG and the US
 -- Shows what percentage of population got Covid in KG
 SELECT Location, date, total_cases, population, (total_cases/population)*100 AS percentage_cov
 FROM PortfolioProject1..CovidDeath
@@ -40,7 +40,7 @@ WHERE Location = 'United States'
 ORDER BY 1,2
 
 
--- What country has the highest infection rate compare to population?
+--4. What country has the highest infection rate compare to population?
 SELECT Location, population, MAX(total_cases) AS highest_inf_cnt,  MAX((total_cases/population))*100 AS percentage_cov --percentage_Cov - is the precentage of population infected
 FROM PortfolioProject1..CovidDeath
 GROUP BY population, location
@@ -50,7 +50,7 @@ ORDER BY 4 DESC
 -- Kyrgyzstan has 3%
 
 
--- Showing top 10 countries with highest death per population
+--5. Showing top 10 countries with highest death per population
 SELECT TOP 10 location, MAX(CONVERT(NUMERIC, total_deaths)) AS total_death_count
     -- here we did convert to NUMERIC because initially data type us NVARCHAR
 FROM PortfolioProject1..coviddeath
@@ -62,7 +62,7 @@ ORDER BY total_death_count DESC
 
 
 -- ANALYSING DATA BY CONTINENT
--- Which continet has the most people died due to Covid?
+--6. Which continet has the most people died due to Covid?
 SELECT location AS continent, MAX(CONVERT(NUMERIC, total_deaths)) AS total_death_count
     -- here we did convert to NUMERIC because initially data type us NVARCHAR
 FROM PortfolioProject1..coviddeath
@@ -85,7 +85,7 @@ ORDER BY total_death_count DESC
 -- The second is UK with 143,999 and Italy is third with 133,034 death
 
 
--- Which continent has the most people vaccinated?
+--7. Which continent has the most people vaccinated?
 SELECT location AS continent, MAX(CONVERT(NUMERIC, people_vaccinated)) AS people_vaccinated
     -- here we did convert to NUMERIC because initially data type us NVARCHAR
 FROM PortfolioProject1..covidvax
@@ -97,7 +97,7 @@ ORDER BY 2 DESC
 -- Europe is the second with 460,645,154 total people vaccinated
 
 
--- Another question arises which country has the most people vaccinated in Asia and it's population? (JOINING TABLES)
+--9. Another question arises which country has the most people vaccinated in Asia and it's population? (JOINING TABLES)
 SELECT vax.location, vax.date, dea.population, MAX(CONVERT(NUMERIC, vax.people_vaccinated)) OVER (PARTITION BY dea.location) AS people_vaxnated
 FROM PortfolioProject1..coviddeath dea
 JOIN PortfolioProject1..covidvax vax
@@ -113,7 +113,7 @@ ORDER BY 2 DESC
 -- Kyrgyzstan has only 1,063,125 people vaccinated while total population is 6,628,347
 
 
--- Top 10 countries with the highest number of people vaccinated
+--10. Top 10 countries with the highest number of people vaccinated
 SELECT TOP 10 vax.location, MAX(CAST(vax.people_vaccinated AS NUMERIC)) AS people_vaxed
 FROM PortfolioProject1..CovidDeath dea
 JOIN PortfolioProject1..Covidvax vax
